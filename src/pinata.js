@@ -1,25 +1,24 @@
-//require('dotenv').config();
-const key = process.env.REACT_APP_PINATA_KEY;
-const secret = process.env.REACT_APP_PINATA_SECRET;
+// require('dotenv').config();
+// require("dotenv").config();
 
 const axios = require('axios');
 const FormData = require('form-data');
 
-export const uploadJSONToIPFS = async(JSONBody) => {
+export const uploadJSONToIPFS = async (JSONBody) => {
     const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
     //making axios POST request to Pinata ⬇️
-    return axios 
+    return axios
         .post(url, JSONBody, {
             headers: {
-                pinata_api_key: key,
-                pinata_secret_api_key: secret,
+                pinata_api_key: "08b15bb15c76c373ad33",//process.env.pinata_key,
+                pinata_secret_api_key: "9389781063ed427892da4a5f224be3d059e9d21c74da441149ebba94025f6c4c" //process.env.pinata_secret,
             }
         })
         .then(function (response) {
-           return {
-               success: true,
-               pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash
-           };
+            return {
+                success: true,
+                pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash
+            };
         })
         .catch(function (error) {
             console.log(error)
@@ -28,13 +27,13 @@ export const uploadJSONToIPFS = async(JSONBody) => {
                 message: error.message,
             }
 
-    });
+        });
 };
 
-export const uploadFileToIPFS = async(file) => {
+export const uploadFileToIPFS = async (file) => {
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
     //making axios POST request to Pinata ⬇️
-    
+
     let data = new FormData();
     data.append('file', file);
 
@@ -64,21 +63,21 @@ export const uploadFileToIPFS = async(file) => {
     });
     data.append('pinataOptions', pinataOptions);
 
-    return axios 
+    return axios
         .post(url, data, {
             maxBodyLength: 'Infinity',
             headers: {
                 'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-                pinata_api_key: key,
-                pinata_secret_api_key: secret,
+                pinata_api_key: "08b15bb15c76c373ad33",//process.env.pinata_key,
+                pinata_secret_api_key: "9389781063ed427892da4a5f224be3d059e9d21c74da441149ebba94025f6c4c"//process.env.pinata_secret,
             }
         })
         .then(function (response) {
             console.log("image uploaded", response.data.IpfsHash)
             return {
-               success: true,
-               pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash
-           };
+                success: true,
+                pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash
+            };
         })
         .catch(function (error) {
             console.log(error)
@@ -87,5 +86,5 @@ export const uploadFileToIPFS = async(file) => {
                 message: error.message,
             }
 
-    });
+        });
 };

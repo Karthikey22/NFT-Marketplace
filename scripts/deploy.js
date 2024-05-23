@@ -9,6 +9,7 @@ async function main() {
   const marketplace = await Marketplace.deploy();
 
   await marketplace.deployed();
+  console.log("deployed contract address: ", marketplace.target);
 
   const data = {
     address: marketplace.address,
